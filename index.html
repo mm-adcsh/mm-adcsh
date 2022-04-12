@@ -11,7 +11,7 @@
     <script src="/testfile.js"></script>
 
     
-    <script>
+   <script>
         function debug(val) {
             var prefix = "[GLOBAL]: ";
             if (typeof val === 'string' || val instanceof String) {
@@ -23,7 +23,7 @@
 
         function testAsyncAwait() {
             try {
-                eval("async function a() { debug('bla');}; a();");
+                eval("async function a() { debug('from eval');}; a();");
                 debug('async await works');
             } catch (e) {
                 debug(e);
@@ -102,17 +102,11 @@
         debug('global scope test starting....');
 
         testAsyncAwait();
-
+        testPromise();
         // debug(Promise);
 
         // debug(Promise);
-        testIncludes();
-        try {
-            testPromiseSleep(10000).then(function (r) { debug(r) });
-        } catch (e) {
-            debug(e);
-            debug("global promise DOESNT work");
-        }
+        testIncludes()
         testFetch();
     </script>
 </body>
