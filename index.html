@@ -10,6 +10,7 @@
 
     <script src="/testfile.js"></script>
 
+    
     <script>
         function debug(val) {
             var prefix = "[GLOBAL]: ";
@@ -66,20 +67,23 @@
         }
 
         function testFetch() {
-            try {
-                return fetch('https://jsonplaceholder.typicode.com/todos/1')
-                    .then(function (response) {
-                        debug('from SCRIPT page: fetch works');
-                        return response.json();
-                    })
-                    .then(function (json) {
-                        debug(json);
-                    });
-            } catch(e) {
-                debug(e);
+            if (window.fetch) {
+                try {
+                    return fetch('https://jsonplaceholder.typicode.com/todos/1')
+                        .then(function (response) {
+                            debug('from SCRIPT page: fetch works');
+                            return response.json();
+                        })
+                        .then(function (json) {
+                            debug(json);
+                        });
+                } catch (e) {
+                    debug(e);
+                    debug('fetch doesnt work');
+                }
+            } else {
                 debug('fetch doesnt work');
             }
-
         }
 
         function testAsyncAwait() {
