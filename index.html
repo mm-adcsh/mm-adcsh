@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>testpage</title>
+</head>
+
+<body>
+    <h1>Test page</h1>
+
+    <script src="/testfile.js"></script>
+
+    <script>
+        function debug(val) {
+            var prefix = "[GLOBAL]: ";
+            if (typeof val === 'string' || val instanceof String) {
+                console.log(prefix + val);
+            } else {
+                console.log(prefix + JSON.stringify(val))
+            }
+        }
+
+        function testAsyncAwait() {
+            try {
+                eval("async function a() { debug('bla');}; a();");
+                debug('async await works');
+            } catch (e) {
+                debug(e);
+                debug('async await doesnt work');
+            }
+        }
+
+        function testPromise() {
+            try {
+                var promise = new Promise(function (x, y) { });
+                debug('Promise works');
+                debug(promise);
+            } catch (e) {
+                debug(e);
+                debug('Promise not defined');
+            }
+        }
+
+
+        // it is actually supported in ie 11
+        function testForeach() {
+            var testArr = [1, 'two',];
+            try {
+                testArr.forEach(function (item) {
+                    debug('global foreach works! but it shouldnt...');
+                    debug(item);
+                });
+            } catch (e) {
+                debug('global foreach doesnt work');
+            }
+        }
+
+        function testIncludes() {
+            var testArr = [1, 'two',];
+            try {
+                debug(testArr.includes(1));
+                debug('global array includes works');
+            } catch (e) {
+                debug('global array.includes doesnt work');
+            }
+        }
+
+        function testFetch() {
+            try {
+                return fetch('https://jsonplaceholder.typicode.com/todos/1')
+                    .then(function (response) {
+                        debug('from SCRIPT page: fetch works');
+                        return response.json();
+                    })
+                    .then(function (json) {
+                        debug(json);
+                    });
+            } catch(e) {
+                debug(e);
+                debug('fetch doesnt work');
+            }
+
+        }
+
+        function testAsyncAwait() {
+            try {
+                eval("async function a() { debug('bla');}; a();");
+                debug('async await works');
+            } catch (e) {
+                debug(e);
+                debug('async await doesnt work');
+            }
+        }
+
+        // TEST
+
+        console.log('');
+        debug('global scope test starting....');
+
+        testAsyncAwait();
+
+        // debug(Promise);
+
+        // debug(Promise);
+        testIncludes();
+        try {
+            testPromiseSleep(10000).then(function (r) { debug(r) });
+        } catch (e) {
+            debug(e);
+            debug("global promise DOESNT work");
+        }
+        testFetch();
+    </script>
+</body>
+
+</html>
